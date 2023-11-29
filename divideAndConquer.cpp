@@ -41,11 +41,11 @@ float recursion(vector<Point> sorted) {
         rightHalf = vector<Point>(sorted.begin() + n/2, sorted.end());
     } else {
         recta_divisora = sorted[n/2].x;
-        leftHalf = vector<Point>(sorted.begin(), sorted.begin() + n/2);
+        leftHalf = vector<Point>(sorted.begin(), sorted.begin() + n/2 +1);
         rightHalf = vector<Point>(sorted.begin() + n/2 + 1, sorted.end());
     }
 
-
+    //cout << recta_divisora << endl;
     float dLmin = recursion(leftHalf);
     float dRmin = recursion(rightHalf);
     float dLRmin = min(dLmin,dRmin);
@@ -71,9 +71,15 @@ float recursion(vector<Point> sorted) {
         }
     }
 
-    if (!esPar(n)) {
-        pLeft.push_back(sorted[n/2]);
-    }
+    // cout << "Puntos left y right:" << endl;
+    // printPointArray(leftHalf);
+    // printPointArray(rightHalf);
+
+
+
+    // if (!esPar(n)) {
+    //     pLeft.push_back(sorted[n/2]);
+    // }
     
 
     float dCmin = dLRmin; 
