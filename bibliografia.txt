@@ -1,0 +1,2 @@
+1.- Implementación Sweep Line: https://www.geeksforgeeks.org/closest-pair-of-points-using-sweep-line-algorithm/
+2.- Implementación Miller-Rabin: 
