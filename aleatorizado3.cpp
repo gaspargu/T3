@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <set>
 #include <climits>
+#include <ctime>
 #include <unordered_map>
 #include "structs.h"
 #include "funcionesHash.cpp"
@@ -33,50 +34,28 @@ float comparacion_pares(vector<Point> points) {
     return min_distance;
 }
 
-map<ull,vector<Point>> createGrid(vector<Point> points, float d) {
-    map<ull,vector<Point>> grid;
-    for (int i=0; i < points.size(); i++) {
-        ull key = findKey(points[i], d);
-        grid[key].push_back(points[i]);
-    }
-    
-    return grid;
-}
-
-vector<vector<ull>> createHashTable(vector<Point> points, float d, 
+vector<vector<Point>> createHashTable(vector<Point> points, float d, 
                                     int m, ull (*hashFunction)(ull,ull,ull,ull,ull), 
                                     ull a, ull b, ull p) { 
-    vector<vector<ull>> hashTable(m);
+    vector<vector<Point>> hashTable(m);
 
     for (int i=0; i < points.size(); i++) {
         ull key = findKey(points[i], d);
-        hashTable[hashFunction(key, a, b, p, m)].push_back(key);
+        hashTable[hashFunction(key, a, b, p, m)].push_back(points[i]);
     }
 
     return hashTable;
 }
 
-bool buscar(ull key, vector<vector<ull>> hashTable, 
-            ull (*hashFunction)(ull,ull,ull,ull,ull), int m,
-            ull a, ull b, ull p) {
-    vector<ull> hashPosition = hashTable[hashFunction(key, a, b, p, m)];
-    int n = hashPosition.size();
-    for (int i=0; i<n; i++) {
-        if (hashPosition[i]==key) {
-            return true;
-        }
-    }
-    return false;
-}
-
-float minDistance(Point p, ull key, map<ull,vector<Point>> grid, float start) {
-    vector<Point> points = grid[key];
-    for (int i=0; i < points.size(); i++) {
-        if (p != points[i]) {
-            float new_distance = distance(p, points[i]);
-            start = min(start, new_distance);
-        } 
-    }
+float minDistance(Point point, ull posHash, vector<vector<Point>> hashTable, 
+                     float start) {
+    const vector<Point>& points = hashTable[posHash];
+    
+    for (const auto& otherPoint : points) {
+        //cout << "j=" << i << endl;
+        
+    } 
+    
     return start;
 }
 
@@ -88,10 +67,9 @@ float aleatorizado(vector<Point> points, ull (*hashFunction)(ull,ull,ull,ull,ull
     float d = sqrt(d_square);
     ull grid_size = ceil(1/d);
     ull m = grid_size*grid_size;
-    ull max_key = concatenateBits(grid_size-1,grid_size-1);
-
-    ull p = nextPrime(max_key);
     
+    ull max_key = concatenateBits(grid_size-1,grid_size-1);
+    ull p = nextPrime(max_key);
     // Creamos a y b para la familia de funciones hash
     random_device rd;
     mt19937 gen(rd());
@@ -100,11 +78,9 @@ float aleatorizado(vector<Point> points, ull (*hashFunction)(ull,ull,ull,ull,ull
     ull a = dist(gen);
     ull b = dist(gen);
     
-    map<ull,vector<Point>> grid = createGrid(points, d);
-    vector<vector<ull>> hashTable = createHashTable(points, d, m, hashFunction,a,b,p);
+    vector<vector<Point>> hashTable = createHashTable(points, d, m, hashFunction,a,b,p);
     // Paso 3 del algoritmo
     for (int i=0; i < points.size(); i++) {
-        cout << i << endl;
         ull key = findKey(points[i], d);
         uint mask = 262143;
         uint row = static_cast<uint>(key & mask);
@@ -117,18 +93,20 @@ float aleatorizado(vector<Point> points, ull (*hashFunction)(ull,ull,ull,ull,ull
         ull n6 = concatenateBits(column,row-1);
         ull n7 = concatenateBits(column+1,row-1);
         ull n8 = concatenateBits(column-1,row+1);
-        ull neighbour[] = {key,n1,n2,n3,n4,n5,n6,n7,n8};
-        //cout << "encuentra vecinos" << endl;
-        for (int j=0; j<9; j++) {
-            if (buscar(neighbour[j],hashTable,hashFunction,m,a,b,p)) {
-                min_distance = minDistance(points[i], neighbour[j], grid, min_distance);
-            }
+        
+        for (ull j : {key, n1, n2, n3, n4, n5, n6, n7, n8}) {
+            ull posHash = hashFunction(j,a,b,p,m);
+            vector<Point> puntos = hashTable[posHash];
+            for(int k=0; k<puntos.size(); k++) {
+                float new_distance = distance(puntos[k], points[i]);
+                if (new_distance > 0) {
+                    min_distance = min(min_distance, new_distance);
+                }
+            } 
         }
+        
+        
     }
 
     return min_distance;
 }
-
-
-
-

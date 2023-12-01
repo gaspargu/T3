@@ -5,9 +5,9 @@ using namespace std;
  
 // Utility function to do modular exponentiation.
 // It returns (x^y) % p
-int power(int x, unsigned int y, int p)
+ull power(ull x, ull y, ull p)
 {
-    int res = 1;      // Initialize result
+    ull res = 1;      // Initialize result
     x = x % p;  // Update x if it is more than or
                 // equal to p
     while (y > 0)
@@ -28,14 +28,14 @@ int power(int x, unsigned int y, int p)
 // probably prime.
 // d is an odd number such that  d*2 = n-1
 // for some r >= 1
-bool millerTest(int d, int n)
+bool millerTest(ull d, ull n)
 {
     // Pick a random number in [2..n-2]
     // Corner cases make sure that n > 4
-    int a = 2 + rand() % (n - 4);
+    ull a = 2 + rand() % (n - 4);
  
     // Compute a^d % n
-    int x = power(a, d, n);
+    ull x = power(a, d, n);
  
     if (x == 1  || x == n-1)
        return true;
@@ -61,14 +61,14 @@ bool millerTest(int d, int n)
 // It returns false if n is composite and returns true if n
 // is probably prime.  k is an input parameter that determines
 // accuracy level. Higher value of k indicates more accuracy.
-bool isPrime(int n, int k)
+bool isPrime(ull n, int k)
 {
     // Corner cases
     if (n <= 1 || n == 4)  return false;
     if (n <= 3) return true;
  
     // Find r such that n = 2^d * r + 1 for some r >= 1
-    int d = n - 1;
+    ull d = n - 1;
     while (d % 2 == 0)
         d /= 2;
  
@@ -123,10 +123,19 @@ bool millerrabin(ull n) {
     return true;
 }
 
+// Exponenciacion rapida
+ull pot(ull a, ull n) {
+    if (n == 0) return 1;
+    ull x = pot(a, n/2);
+    if ((n & 1) == 0) return x*x;
+    return x*x*a;
+} 
+
+
 // Función para encontrar el siguiente primo después de n
 ull nextPrime(ull n){
     // Si n es par, el siguiente primo es n + 1
-    if (n % 2 == 0) n++;
+    if ((n & 1) == 0) n++;
     // Si n es impar, el siguiente primo es n + 2
     else n += 2;
     // Iteramos hasta encontrar un primo iterando entre los impares
