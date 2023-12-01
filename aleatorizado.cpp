@@ -30,7 +30,6 @@ float comparacion_pares(vector<Point> points) {
         float new_distance = distance(points[index1], points[index2]);
         min_distance = min(min_distance, new_distance);
     }
-    //cout << min_distance << endl;
     return min_distance;
 }
 
@@ -39,25 +38,30 @@ map<ull,vector<Point>> createGrid(vector<Point> points, float d) {
     for (int i=0; i < points.size(); i++) {
         ull key = findKey(points[i], d);
         grid[key].push_back(points[i]);
-    }
 
+        cout << "key: "<<key << endl;
+    }
+    cout << grid.size() <<endl;
     return grid;
 }
 
 vector<vector<ull>> createHashTable(vector<Point> points, float d, 
-                                        int m, uint (*hashFunction)(ull,int)) { 
+                                    int m, ull (*hashFunction)(ull,ull,ull,ull,ull), 
+                                    ull a, ull b, ull p) { 
     vector<vector<ull>> hashTable(m);
 
     for (int i=0; i < points.size(); i++) {
         ull key = findKey(points[i], d);
-        hashTable[hashFunction(key, m)].push_back(key);
+        hashTable[hashFunction(key, a, b, p, m)].push_back(key);
     }
 
     return hashTable;
 }
 
-bool buscar(ull key, vector<vector<ull>> hashTable, uint (*hashFunction)(ull,int), int m) {
-    vector<ull> hashPosition = hashTable[hashFunction(key, m)];
+bool buscar(ull key, vector<vector<ull>> hashTable, 
+            ull (*hashFunction)(ull,ull,ull,ull,ull), int m,
+            ull a, ull b, ull p) {
+    vector<ull> hashPosition = hashTable[hashFunction(key, a, b, p, m)];
     int n = hashPosition.size();
     for (int i=0; i<n; i++) {
         if (hashPosition[i]==key) {
@@ -73,7 +77,6 @@ float minDistance(Point p, ull key, map<ull,vector<Point>> grid, float start) {
         if (p != points[i]) {
             float new_distance = distance(p, points[i]);
             start = min(start, new_distance);
-            //cout << start << endl;
         } 
     }
     return start;
@@ -81,21 +84,33 @@ float minDistance(Point p, ull key, map<ull,vector<Point>> grid, float start) {
 
 
 
-float aleatorizado(vector<Point> points, uint (*hashFunction)(ull,int)) {
+float aleatorizado(vector<Point> points, ull (*hashFunction)(ull,ull,ull,ull,ull)) {
     float d_square = comparacion_pares(points);
     float min_distance = d_square;
-    //cout << min_distance << "entrada" << endl;
     float d = sqrt(d_square);
-    int grid_size = ceil(1/d);
-    int m = points.size();
-    map<ull,vector<Point>> grid = createGrid(points, d);
-    vector<vector<ull>> hashTable = createHashTable(points, d, m, hashFunction);
+    ull grid_size = ceil(1/d);
+    ull m = grid_size*grid_size;
+    ull max_key = concatenateBits(grid_size-1,grid_size-1);
 
+    ull p = nextPrime(max_key);
+    
+    // Creamos a y b para la familia de funciones hash
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<int> dist(1, p - 1);
+    uniform_int_distribution<int> dist2(0, p - 1);
+    ull a = dist(gen);
+    ull b = dist(gen);
+    
+    map<ull,vector<Point>> grid = createGrid(points, d);
+    vector<vector<ull>> hashTable = createHashTable(points, d, m, hashFunction,a,b,p);
     // Paso 3 del algoritmo
     for (int i=0; i < points.size(); i++) {
+        //cout << i << endl;
         ull key = findKey(points[i], d);
-        uint row = static_cast<uint>(key);
-        uint column = static_cast<uint>(key >> 32);
+        uint mask = 262143;
+        uint row = static_cast<uint>(key & mask);
+        uint column = static_cast<uint>(key >> 18);
         ull n1 = concatenateBits(column+1,row+1);
         ull n2 = concatenateBits(column+1,row);
         ull n3 = concatenateBits(column,row+1);
@@ -105,14 +120,14 @@ float aleatorizado(vector<Point> points, uint (*hashFunction)(ull,int)) {
         ull n7 = concatenateBits(column+1,row-1);
         ull n8 = concatenateBits(column-1,row+1);
         ull neighbour[] = {key,n1,n2,n3,n4,n5,n6,n7,n8};
+        //cout << "encuentra vecinos" << endl;
         for (int j=0; j<9; j++) {
-            if (buscar(neighbour[j],hashTable,hashFunction,m)) {
+            if (buscar(neighbour[j],hashTable,hashFunction,m,a,b,p)) {
                 min_distance = minDistance(points[i], neighbour[j], grid, min_distance);
             }
         }
     }
 
-    //cout << min_distance << "FINAL"<< endl;
     return min_distance;
 }
 

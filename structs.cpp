@@ -37,10 +37,11 @@ vector<Point> generarPuntosAleatorios(int num_points) {
 ull concatenateBits(uint i, uint j) {
     uint32_t part1 = static_cast<uint32_t>(i);
     uint32_t part2 = static_cast<uint32_t>(j);
-    ull res = (static_cast<ull>(part1) << 32) | part2;
+    ull res = (static_cast<ull>(part1) << 18) | part2;
     return res;
 }
 
+// Encuentra 
 ull findKey(Point p, float d) {
     uint i = static_cast<uint>(p.x / d);
     uint j = static_cast<uint>(p.y / d);
