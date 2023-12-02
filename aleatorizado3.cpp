@@ -67,10 +67,12 @@ float aleatorizado(vector<Point> points, ull (*hashFunction)(ull,ull,ull,ull,ull
     float d = sqrt(d_square);
     ull grid_size = ceil(1/d);
     ull m = grid_size*grid_size;
-    
+    cout << "m=" << m << endl;
     ull max_key = concatenateBits(grid_size-1,grid_size-1);
+    cout << max_key << endl;
     unsigned t0 = clock();
     ull p = nextPrime(max_key);
+    cout << p << endl;
     unsigned t1 = clock();
     double time = (double(t1-t0)/CLOCKS_PER_SEC);
     cout << "Tiempo en crear primo: " << time << endl;
@@ -102,6 +104,7 @@ float aleatorizado(vector<Point> points, ull (*hashFunction)(ull,ull,ull,ull,ull
         
         for (ull j : {key, n1, n2, n3, n4, n5, n6, n7, n8}) {
             ull posHash = hashFunction(j,a,b,p,m);
+            
             vector<Point> puntos = hashTable[posHash];
             for(int k=0; k<puntos.size(); k++) {
                 float new_distance = distance(puntos[k], points[i]);

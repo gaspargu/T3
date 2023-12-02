@@ -9,10 +9,10 @@ using namespace std;
 
 int main() {
     // Numero de puntos
-    ull n = 1000000;
+    ull n = 10000;
     // Generar 100 puntos aleatorios
     vector<Point> puntos_aleatorios = generarPuntosAleatorios(n);
-    cout << "Arreglo de " << n << " de puntos aleatorios:" << endl;
+    cout << "Arreglo de " << n << " puntos aleatorios:" << endl;
     //printPointArray(puntos_aleatorios);
 
     // Algoritmo determinista

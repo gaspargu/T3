@@ -86,7 +86,10 @@ float recursion(vector<Point> sorted) {
     for (int i=0; i<pLeft.size(); i++) {
         for (int j=0; j<pRight.size(); j++) {
             float new_distance = distance(pLeft[i],pRight[j]);
-            dCmin = min(dCmin, new_distance);
+            if (new_distance > 0) {
+                dCmin = min(dCmin, new_distance);
+            }
+            
         }
     }
 
