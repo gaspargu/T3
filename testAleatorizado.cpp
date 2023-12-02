@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include "structs.h"
-#include "aleatorizado3.cpp"
+#include "aleatorizado5.cpp"
 #include "sweepLine.cpp"
 #include "divideAndConquer.cpp"
 
@@ -9,7 +9,7 @@ using namespace std;
 
 int main() {
     // Numero de puntos
-    ull n = 10000;
+    ull n = 1000000;
     // Generar 100 puntos aleatorios
     vector<Point> puntos_aleatorios = generarPuntosAleatorios(n);
     cout << "Arreglo de " << n << " puntos aleatorios:" << endl;
@@ -25,7 +25,7 @@ int main() {
 
     // Algoritmo aleatorizado
     unsigned t2 = clock();
-    float aleatorio = aleatorizado(puntos_aleatorios, hashUniversal); 
+    float aleatorio = aleatorizado(puntos_aleatorios); 
     unsigned t3 = clock();
     double time_aleatorio = (double(t3-t2)/CLOCKS_PER_SEC);
     cout << "Distancia minima aleatorizado:"<< aleatorio << endl;

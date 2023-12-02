@@ -20,7 +20,7 @@ ull logBase2(ull n) {
 // Encuentra 1era potencia de 2 mayor al numero
 ull pot2(ull n) {
     ull res = 1;
-    while(res < n) {
+    while(res <= n) {
         res <<= 1;
     }
     return res;
@@ -103,5 +103,6 @@ ull hashUniversal(ull key, ull a, ull b, ull p, ull m){
 }
 
 ull hashFast(ull key, ull a, ull b, ull k, ull l) {
-    return ((a * key + b) & k) >> l;
+    ull mask = (1<<k) - 1;
+    return ((a * key + b) & mask) >> l;
 }
