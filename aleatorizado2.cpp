@@ -101,9 +101,7 @@ float aleatorizado(vector<Point> points, ull (*hashFunction)(ull,ull,ull,ull,ull
             ull posHash = hashFunction(j,a,b,p,m);
             unsigned t0 = clock();
             min_distance = minDistance(points[i], posHash, hashTable, min_distance);
-            unsigned t1 = clock();
-            double time = (double(t1-t0)/CLOCKS_PER_SEC);
-            cout << "tiempo:" << time << endl;
+            
         }
         
         

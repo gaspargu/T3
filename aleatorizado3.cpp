@@ -69,7 +69,11 @@ float aleatorizado(vector<Point> points, ull (*hashFunction)(ull,ull,ull,ull,ull
     ull m = grid_size*grid_size;
     
     ull max_key = concatenateBits(grid_size-1,grid_size-1);
+    unsigned t0 = clock();
     ull p = nextPrime(max_key);
+    unsigned t1 = clock();
+    double time = (double(t1-t0)/CLOCKS_PER_SEC);
+    cout << "Tiempo en crear primo: " << time << endl;
     // Creamos a y b para la familia de funciones hash
     random_device rd;
     mt19937 gen(rd());
@@ -79,6 +83,8 @@ float aleatorizado(vector<Point> points, ull (*hashFunction)(ull,ull,ull,ull,ull
     ull b = dist(gen);
     
     vector<vector<Point>> hashTable = createHashTable(points, d, m, hashFunction,a,b,p);
+
+    
     // Paso 3 del algoritmo
     for (int i=0; i < points.size(); i++) {
         ull key = findKey(points[i], d);
