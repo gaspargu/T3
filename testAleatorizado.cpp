@@ -1,3 +1,4 @@
+// testAleatorizado.cpp
 #include <iostream>
 #include <vector>
 #include "structs.h"
@@ -6,6 +7,9 @@
 #include "divideAndConquer.cpp"
 
 using namespace std;
+
+// g++ testAleatorizado.cpp structs.cpp -o test
+// ./test
 
 int main() {
     // Numero de puntos
@@ -25,10 +29,27 @@ int main() {
 
     // Algoritmo aleatorizado
     unsigned t2 = clock();
-    float aleatorio = aleatorizado(puntos_aleatorios); 
+    pair<float, float> aleatorio_m = aleatorizado_mersenne(puntos_aleatorios); 
     unsigned t3 = clock();
-    double time_aleatorio = (double(t3-t2)/CLOCKS_PER_SEC);
-    cout << "Distancia minima aleatorizado:"<< aleatorio << endl;
+    double time_mersenne = (double(t3-t2)/CLOCKS_PER_SEC);
+    cout << "Distancia minima aleatorizado mersenne:"<< aleatorio_m.first << endl;
+    cout << "Tiempo aleatorizado mersenne: " << time_mersenne << endl;
+
+    // Algoritmo aleatorizado
+    unsigned t4 = clock();
+    pair<float, float> aleatorio = aleatorizado(puntos_aleatorios); 
+    unsigned t5 = clock();
+    double time_aleatorio = (double(t5-t4)/CLOCKS_PER_SEC);
+    cout << "Distancia minima aleatorizado:"<< aleatorio.first << endl;
     cout << "Tiempo aleatorizado: " << time_aleatorio << endl;
+
+    // Algoritmo aleatorizado
+    unsigned t6 = clock();
+    pair<float, float> aleatorio_fast = aleatorizado_fast(puntos_aleatorios); 
+    unsigned t7 = clock();
+    double time_aleatorio_fast = (double(t7-t6)/CLOCKS_PER_SEC);
+    cout << "Distancia minima aleatorizado fast:"<< aleatorio_fast.first << endl;
+    cout << "Tiempo aleatorizado: " << time_aleatorio_fast << endl;
+
     return 0;
 }

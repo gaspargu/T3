@@ -18,7 +18,7 @@ ull logBase2(ull n) {
 }
 
 // Encuentra 1era potencia de 2 mayor al numero
-ull pot2(ull n) {
+ull nextPot2(ull n) {
     ull res = 1;
     while(res <= n) {
         res <<= 1;
@@ -84,13 +84,44 @@ bool millerrabin(ull n) {
 
 // Función para encontrar el siguiente primo después de n
 ull nextPrime(ull n){
-    // Si n es par, el siguiente primo es n + 1
-    if ((n & 1) == 0) n++;
-    // Si n es impar, el siguiente primo es n + 2
-    else n += 2;
-    // Iteramos hasta encontrar un primo iterando entre los impares
-    while (!millerrabin(n)) n += 2;
-    return n;
+     std::vector<unsigned long long> primos_mas_grandes = {
+        1009ULL,
+        10061ULL,
+        100003ULL,
+        1000003ULL,
+        10000019ULL,
+        100000007ULL,
+        1000000007ULL,
+        10000000019ULL,
+        100000000003ULL,
+        10000000000037ULL,
+        100000000000031ULL,
+        10000000000000061ULL,
+        100000000000000003ULL
+    };
+    for (ull primo : primos_mas_grandes) {
+        if (primo > n) return primo;
+    }
+
+    return primos_mas_grandes[10];
+}
+
+ull mersennePrime(ull n){
+    // Definimos los primos de mersenne que entran en 64 bits
+    vector<long long> primosMersenne64 = {
+        3, 7, 31, 127, 8191, 131071, 524287, 2147483647, 2305843009213693951
+    };
+    for (int i = 0; i < primosMersenne64.size(); i++) {
+        if (primosMersenne64[i] > n) return primosMersenne64[i];
+    }
+    return primosMersenne64[8];
+}
+
+// Función para usar familia de funciones hash universales.
+ull hash_mersenne(ull key, ull a, ull b, ull p, ull m) {
+    ull n = floor(log2(p+1));
+    ull mask = (1 << n) - 1;
+    return ((a * key + b) & mask) % m;
 }
 
 uint hashSimple(ull x, int m) {
