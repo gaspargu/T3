@@ -209,8 +209,8 @@ pair<float,float> aleatorizado_fast2(vector<Point> points) {
     float min_distance = d_square;
     float d = sqrt(d_square);
     ull grid_size = ceil(1/d);
-    ull m = nextPot2(2*points.size()); // m = 2**l  encuentra la 
-    ull l = log2(m);
+    ull l = 2*points.size();
+    ull m = pow(2, l); // m = 2**l  
     ull max_key = concatenateBits(grid_size-1,grid_size-1);
     ull p = mersennePrime(max_key); // Tomamos un primo de mersenne para hacer barato el calculo de modulo de p    
     ull k_m = log2(p + 1);
