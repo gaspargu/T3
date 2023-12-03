@@ -13,7 +13,7 @@ using namespace std;
 
 int main() {
     // Numero de puntos
-    ull n = 1000000;
+    ull n = 1000;
     // Generar 100 puntos aleatorios
     vector<Point> puntos_aleatorios = generarPuntosAleatorios(n);
     cout << "Arreglo de " << n << " puntos aleatorios:" << endl;
