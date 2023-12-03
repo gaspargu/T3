@@ -288,7 +288,7 @@ pair<float,float> aleatorizado_fast3(vector<Point> points) {
     float d = sqrt(d_square);
     ull grid_size = ceil(1/d);
 
-    ull m = nextPot2(2*points.size());
+    ull m = nextPot2(points.size());
     ull l = log2(m);
 
     ull max_key = concatenateBits(grid_size-1,grid_size-1);
@@ -296,8 +296,8 @@ pair<float,float> aleatorizado_fast3(vector<Point> points) {
 
     ull p =   nextPot2(max_key);
     ull k_m = log2(p);
-
-    cout << "l "<< l <<" m "<< m << " k "<< k_m << " p "<< p << endl;
+    l = k_m - (k_m/2);
+    //cout << "l "<< l <<" m "<< m << " k "<< k_m << " p "<< p << endl;
     random_device rd;
     mt19937 gen(rd());
     uniform_int_distribution<int> dist(1, p - 1);
