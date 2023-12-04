@@ -102,19 +102,18 @@ ull nextPrime(ull n){
     for (ull primo : primos_mas_grandes) {
         if (primo > n) return primo;
     }
-
-    return primos_mas_grandes[10];
+    return primos_mas_grandes[primos_mas_grandes.size() - 1];
 }
 
 ull mersennePrime(ull n){
     // Definimos los primos de mersenne que entran en 64 bits
-    vector<long long> primosMersenne64 = {
-        3, 7, 31, 127, 8191, 131071, 524287, 2147483647, 2305843009213693951
+    vector<ull> primosMersenne64 = {
+        3, 7, 31, 127, 8191, 131071, 524287, 2147483647
     };
     for (int i = 0; i < primosMersenne64.size(); i++) {
         if (primosMersenne64[i] > n) return primosMersenne64[i];
     }
-    return primosMersenne64[8];
+    return primosMersenne64[primosMersenne64.size() - 1];
 }
 
 // Función para usar familia de funciones hash universales.

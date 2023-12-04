@@ -45,7 +45,7 @@ int main() {
 
     // Algoritmo aleatorizado
     unsigned t6 = clock();
-    pair<float, float> aleatorio_fast = aleatorizado_fast3(puntos_aleatorios); 
+    pair<float, float> aleatorio_fast = aleatorizado_fast2(puntos_aleatorios); 
     unsigned t7 = clock();
     double time_aleatorio_fast = (double(t7-t6)/CLOCKS_PER_SEC);
     cout << "Distancia minima aleatorizado fast:"<< aleatorio_fast.first << endl;
