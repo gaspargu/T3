@@ -14,7 +14,7 @@ using namespace std;
 int main() {
     // Numero de puntos
     ull n = 500000;
-    // Generar 100 puntos aleatorios
+    // Generar n puntos aleatorios
     vector<Point> puntos_aleatorios = generarPuntosAleatorios(n);
     cout << "Arreglo de " << n << " puntos aleatorios:" << endl;
     //printPointArray(puntos_aleatorios);
