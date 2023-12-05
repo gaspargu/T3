@@ -21,7 +21,8 @@ int main() {
     FILE* times_fast = fopen("times_fast_exp2.txt", "a");
     float dist;
 
-    for(int i = 1; i <= 100; i++) {
+    for (ull n = 100000; n <= 1000000; n += 100000) { 
+        for(int i = 1; i <= 50; i++) {
         // Generar n puntos aleatorios
         vector<Point> puntos_aleatorios = generarPuntosAleatorios(n);
 
@@ -36,7 +37,7 @@ int main() {
         chrono::duration<double> duration_det = end_det - start_det;
         double duration_d_det = duration_det.count();
         //Guardamos el tiempo
-        fprintf(times_det, "dist = %e ,duration = %f\n", dist, duration_d_det);
+        fprintf(times_det, "n = %llu ,dist = %e ,duration = %f\n", n, dist, duration_d_det);
 
         cout << "Algoritmo aleatorizado: " << endl;
         auto start_random = chrono::high_resolution_clock::now();
@@ -47,7 +48,7 @@ int main() {
         chrono::duration<double> duration_random = end_random - start_random;
         double duration_d_random = duration_random.count();
         //Guardamos el tiempo
-        fprintf(times_random, "dist = %e ,duration = %f , selected_d = %e\n", 
+        fprintf(times_random, "n = %llu ,dist = %e ,duration = %f , selected_d = %e\n", n, 
             dist_random.first, duration_d_random, dist_random.second);
     
         cout << "Algoritmo aleatorizado Mersenne: " << endl;
@@ -57,9 +58,9 @@ int main() {
         auto end_random_m = chrono::high_resolution_clock::now();
         // Calculamos duracion de ejecuccion
         chrono::duration<double> duration_random_m = end_random_m - start_random_m;
-        double duration_d_random_m = duration_random.count();
+        double duration_d_random_m = duration_random_m.count();
         //Guardamos el tiempo
-        fprintf(times_mersenne, "dist = %e ,duration = %f ,selected_d = %e\n", 
+        fprintf(times_mersenne, "n = %llu ,dist = %e ,duration = %f ,selected_d = %e\n", n,
                 dist_random_mersenne.first, duration_d_random_m, dist_random_mersenne.second);
 
         cout << "Algoritmo aleatorizado Fast: " << endl;
@@ -71,10 +72,12 @@ int main() {
         chrono::duration<double> duration_random_f = end_random_f - start_random_f;
         double duration_d_random_f = duration_random_f.count();
         //Guardamos el tiempo
-        fprintf(times_fast, "dist = %e ,duration = %f ,selected_d = %e\n", 
+        fprintf(times_fast, "n = %llu ,dist = %e ,duration = %f ,selected_d = %e\n", n,
                 dist_random_f.first, duration_d_random_f, dist_random_f.second);
 
     }
+    }
+    
     // Cerramos el archivo
     fclose(times_det);
     fclose(times_random);
