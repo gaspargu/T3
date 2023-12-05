@@ -57,7 +57,7 @@ int main() {
         auto end_random_m = chrono::high_resolution_clock::now();
         // Calculamos duracion de ejecuccion
         chrono::duration<double> duration_random_m = end_random_m - start_random_m;
-        double duration_d_random_m = duration_random.count();
+        double duration_d_random_m = duration_random_m.count();
         //Guardamos el tiempo
         fprintf(times_mersenne, "dist = %e ,duration = %f ,selected_d = %e\n", 
                 dist_random_mersenne.first, duration_d_random_m, dist_random_mersenne.second);
